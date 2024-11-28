@@ -5,8 +5,10 @@ import './index.css'
 import Table from './components/Table.tsx'
 import ToDoItem from './classes/ToDoItem.ts'
 
-let a = new ToDoItem("Trash", 50, new Date, true);
-let b = new ToDoItem("Rash", 30, new Date, false);
+let a = new ToDoItem("1231-12345","Trash", 50, new Date(), true);
+let b = new ToDoItem("12356486", "Rash", 30, new Date(), false);
+//let a = new ToDoItem("1231-12345", "Trash", 50, true);
+//let b = new ToDoItem("12356486", "Rash", 30, false);
 const items = [a, b];
 
 
