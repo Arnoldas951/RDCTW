@@ -1,3 +1,4 @@
+import checkBox from '../components/CheckBox';
 export default class Describer {
     static describe(typeOfClass: any): Array<string> {
         let classType = new typeOfClass();
@@ -9,12 +10,15 @@ export default class Describer {
         if (typeof row.getMonth == 'function')
             typeOf = Date;
         else
-        typeOf = typeof row;
+            typeOf = typeof row;
 
         switch (typeOf) {
             case Date: {
-                console.log(row);
                 return new Date(row).toLocaleDateString('lt-LT');
+                break;
+            }
+            case "boolean": {
+                return checkBox(row);
                 break;
             }
             default: {
