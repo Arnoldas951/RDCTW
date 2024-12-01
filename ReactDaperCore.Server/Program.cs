@@ -1,3 +1,5 @@
+using Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,6 +20,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+TableCreatorUpdator tableCreatorUpdator = new TableCreatorUpdator();
+tableCreatorUpdator.CreateTable();
 
 app.UseHttpsRedirection();
 
