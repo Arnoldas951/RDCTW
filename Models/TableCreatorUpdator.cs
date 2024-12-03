@@ -1,5 +1,5 @@
-﻿using Models.DbModels;
-using Models.Enums;
+﻿using Microsoft.Data.SqlClient;
+using Models.DbModels;
 using System.Reflection;
 using System.Text;
 
@@ -8,6 +8,7 @@ namespace Models
     public class TableCreatorUpdator
     {
         private static readonly List<Type> Tables = new List<Type>();
+        private readonly string DbConnectionString;
 
         private static Dictionary<string, string> TypeMap = new Dictionary<string, string> {
             { "Int32", "INT" },
@@ -17,17 +18,30 @@ namespace Models
             { "DateTime", "DATETIME"},
             { "Float", "FLOAT"} };
 
-        public TableCreatorUpdator()
+        public TableCreatorUpdator(string DbConnectionString)
         {
+            this.DbConnectionString = DbConnectionString;
             Tables.Add(typeof(ToDoItem));
         }
 
-        public string CreateTable()
+        public void CreateTables()
         {
+            string commandText = CreateTableScript();
+            using (SqlConnection con = new SqlConnection(DbConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand(commandText, con);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        public string CreateTableScript()
+        {
+            StringBuilder sb = new StringBuilder();
             foreach (var table in Tables)
             {
                 var test = table.GetProperties();
-                StringBuilder sb = new StringBuilder();
                 sb.Append($"CREATE TABLE [{table.Name}](");
                 foreach (var field in table.GetProperties())
                 {
@@ -38,9 +52,8 @@ namespace Models
 
                 }
                 sb.Append(")");
-                //table.field
             }
-            return "";
+            return sb.ToString();
         }
 
         private bool IsNullable(PropertyInfo info)

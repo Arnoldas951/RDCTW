@@ -1,6 +1,7 @@
 using Models;
 
 var builder = WebApplication.CreateBuilder(args);
+string connectionString = string.Empty;
 
 // Add services to the container.
 
@@ -8,7 +9,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.json");
+connectionString = builder.Configuration.GetConnectionString("local");
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -21,8 +23,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-TableCreatorUpdator tableCreatorUpdator = new TableCreatorUpdator();
-tableCreatorUpdator.CreateTable();
+TableCreatorUpdator tableCreatorUpdator = new TableCreatorUpdator(connectionString);
+tableCreatorUpdator.CreateTables();
 
 app.UseHttpsRedirection();
 
