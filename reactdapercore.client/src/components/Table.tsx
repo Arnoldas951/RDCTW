@@ -10,6 +10,8 @@ export default function Table({ className, objectType,listItems}) {
 
                 {objectFieldArray.map(field =>
                     field == "Id" ? <td key={field} className='HideThis'>{field}</td> : <td> {field}</td>)}
+                <td>
+                </td>
             </tr>
         </thead>
         <tbody>
@@ -18,6 +20,11 @@ export default function Table({ className, objectType,listItems}) {
                     {objectFieldArray.map(field => field == "Id" ?
                         <td className='HideThis'>{row[field]}</td> :
                         <td>{describer.rowType(row[field])}</td>)}
+                    <td>
+                        <button>
+                            Edit
+                        </button>
+                    </td>
                 </tr>)}
         </tbody>
     </table>;

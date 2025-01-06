@@ -23,8 +23,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-TableCreatorUpdator tableCreatorUpdator = new TableCreatorUpdator(connectionString);
-tableCreatorUpdator.CreateTables();
+//TableCreatorUpdator tableCreatorUpdator = new TableCreatorUpdator(connectionString);
+//tableCreatorUpdator.CreateTables();
 
 app.UseHttpsRedirection();
 
