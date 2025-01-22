@@ -1,59 +1,37 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import './output.css'
+import Table from './components/Table.tsx'
+import ToDoItem from './classes/ToDoItem.ts'
 
-interface Forecast {
-    date: string;
-    temperatureC: number;
-    temperatureF: number;
-    summary: string;
-}
+// interface Forecast {
+//     date: string;
+//     temperatureC: number;
+//     temperatureF: number;
+//     summary: string;
+// }
 
 function App() {
-    const [forecasts, setForecasts] = useState<Forecast[]>();
+    const [items, setItems] = useState<ToDoItem[]>();
 
     useEffect(() => {
-        populateWeatherData();
+        populateToDoItems();
     }, []);
 
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
-
+  
     return (
+        items ? 
         <div>
-            <h1 className="text-3xl font-bold underline">
-                Hello world! bozog
-            </h1>
-            <h1 id="tableLabel" className="text-3xl font-bold underline">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
+          <Table className={"table-auto"} objectType={ToDoItem} listItems={items} />
         </div>
+        :
+        <div> Loading...</div>
     );
 
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
+    async function populateToDoItems() {
+        const response = await fetch('https://localhost:7014/api/v1/ToDoItem/ToDoList');
         const data = await response.json();
-        setForecasts(data);
+        setItems(data);
     }
 }
 

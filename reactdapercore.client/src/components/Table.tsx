@@ -4,22 +4,23 @@ import describer from '../classes/ClassDescriber';
 import '../css/Global.css';
 export default function Table({ className, objectType,listItems}) {
     const objectFieldArray = describer.describe(objectType);
+    let x = 0;
     const tableContents = <table className={className}>
         <thead>
             <tr>
-
-                {objectFieldArray.map(field =>
-                    field == "Id" ? <td key={field} className='HideThis'>{field}</td> : <td> {field}</td>)}
+                {objectFieldArray.map((field) =>{
+                    x = x+1;
+                    field == "id" ? <td key={field + x} className='HideThis'>{field}</td> : <td key={field + x}> {field}</td>})}
                 <td>
                 </td>
             </tr>
         </thead>
         <tbody>
             {listItems.map((row, i) => 
-                <tr key={i}>
-                    {objectFieldArray.map(field => field == "Id" ?
-                        <td className='HideThis'>{row[field]}</td> :
-                        <td>{describer.rowType(row[field])}</td>)}
+                <tr key={row.id}>
+                    {objectFieldArray.map(field => field == "id" ?
+                        <td key={row[field]} className='HideThis'>{row[field]}</td> :
+                        <td key={row[field]}>{describer.rowType(row[field])}</td>)}
                     <td>
                         <button>
                             Edit
