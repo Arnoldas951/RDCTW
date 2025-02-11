@@ -2,15 +2,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import describer from '../classes/ClassDescriber';
 import '../css/Global.css';
+import { useState } from "react";
 export default function Table({ className, objectType,listItems}) {
     const objectFieldArray = describer.describe(objectType);
-    let x = 0;
+    const [newItem, setNewItem] = useState(new objectType);
     const tableContents = <table className={className}>
         <thead>
             <tr>
-                {objectFieldArray.map((field) =>{
-                    x = x+1;
-                    field == "id" ? <td key={field + x} className='HideThis'>{field}</td> : <td key={field + x}> {field}</td>})}
+                {objectFieldArray.map(field => 
+                    field == "id" ? <td key={field} className='HideThis'>{field}</td> : <td key={field}> {field}</td>)}
                 <td>
                 </td>
             </tr>
@@ -29,8 +29,23 @@ export default function Table({ className, objectType,listItems}) {
                 </tr>)}
         </tbody>
     </table>;
+
+    const handleChange = (field, e) => {
+        setNewItem({...newItem});
+        newItem[field] = e.target.value;
+    };
     return (
         <div>
+            <div>
+                {objectFieldArray.map(field => field != "id" ?
+                    <input type="text"
+                           value={field}
+                           onChange={(e) => handleChange(field, e)}
+                           // onChange={(e) => setNewItem({...newItem, field: e.target.value})}
+                           className="border p-2 flex-1"/>
+                    : ""
+                )}
+            </div>
             {tableContents}
         </div>)
 }
